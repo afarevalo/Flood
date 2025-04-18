@@ -47,7 +47,7 @@ source(here("2. Excel", "1. eso.R"))
   {\fontsize{38}{45}\selectfont \textbf{\textcolor{white}{Flood Model Report}}} \\[0.8cm]
   {\fontsize{24}{30}\selectfont \textcolor{white}{Portfolio Analysis}} \\[1.2cm]
   {\fontsize{24}{30}\selectfont \textcolor{white}{`r cliente`}} \\[0.4cm]
-  {\Large \textcolor{white}{April 2025}} \\[4cm]
+  {\Large \textcolor{white}{`r fecha`}} \\[4cm]
   {\small \textcolor{white}{A business of XXX}}
 \end{flushleft}
 
@@ -98,38 +98,49 @@ source(here("2. Excel", "1. eso.R"))
 
 \newpage
 
-\noindent \textbf{\textcolor{azuloscuro}{\fontsize{28}{32}\selectfont Results}} \label{sec:results}
-
-\vspace{1cm}
-
-\textbf{\textcolor{turquesa}{\fontsize{16}{20}\selectfont `r cliente`:}}
-
-
-\fontsize{11}{13}\selectfont The following table shows the average and maximum flood in meters for the location `r cliente`.
-
-\vspace{1cm}
-
-
-```{r tabla_final_estilizada_colores, echo=FALSE, message=FALSE, warning=FALSE}
+```{r resultados_por_centro, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 library(kableExtra)
 
-data_base %>%
-  kable(format = "latex", booktabs = TRUE, align = "c") %>%
-  add_header_above(c(
-    "Periodo de Retorno" = 2,
-    "Profundidad Inundación Ríos" = 3,
-    "Profundidad Aguas Superficiales" = 3
-  ), 
-  escape = FALSE, 
-  color = "white", 
-  background = "azuloscuro") %>%
-  kable_styling(
-    latex_options = c("striped", "scale_down", "hold_position"),
-    font_size = 11,
-    position = "center",
-    full_width = FALSE
-  ) %>%
-  row_spec(0, background = "azuloscuro", color = "white")
+for (i in seq_along(base_nombres)) {
+  centro <- base_nombres[i]
+  nombre_limpio <- gsub("_", " ", centro)
+  data_tmp <- get(centro)
+  
+  # Solo mostramos "Results" en la primera iteración
+  if (i == 1) {
+    cat("\\newpage\n")
+    cat("\\noindent \\textbf{\\textcolor{azuloscuro}{\\fontsize{28}{32}\\selectfont Results}} \\label{sec:results}\n\n")
+    cat("\\vspace{0.5cm}\n\n")
+  } else {
+    cat("\\newpage\n")
+  }
+  
+  # Título y descripción por centro
+  cat(sprintf("\\textbf{\\textcolor{turquesa}{\\fontsize{16}{20}\\selectfont %s}}\n\n", nombre_limpio))
+  cat("\\vspace{0.5cm}\n\n")
+  cat(sprintf("\\fontsize{11}{13}\\selectfont The following table shows the average and maximum flood in meters for the location %s.\n\n", nombre_limpio))
+  cat("\\vspace{1cm}\n\n")
+  
+  # Tabla
+  print(
+    kable(data_tmp, format = "latex", booktabs = TRUE, align = "c") %>%
+      add_header_above(c(
+        "Periodo de Retorno" = 2,
+        "Profundidad Inundación Ríos" = 3,
+        "Profundidad Aguas Superficiales" = 3
+      ),
+      escape = FALSE,
+      color = "white",
+      background = "azuloscuro") %>%
+      kable_styling(
+        latex_options = c("striped", "scale_down", "hold_position"),
+        font_size = 11,
+        position = "center",
+        full_width = FALSE
+      ) %>%
+      row_spec(0, background = "azuloscuro", color = "white")
+  )
+}
 ```
 
 \newpage

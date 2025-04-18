@@ -1,3 +1,12 @@
-"0","source(here(""2. Excel"", ""1. eso.R""))
+"0","# Cargar librerías necesarias"
+"0","library(readxl)    # si usas read_excel"
+"0","library(dplyr)     # si haces transformaciones"
+"0","library(knitr)     # para usar kable"
+"0","library(here)      # puede fallar el source en los .Rmd <- here()"
+"2","Warning: package ‘here’ was built under R version 4.3.3"
+"2","here() starts at C:/Users/windows/Documents/GitHub/Problem_Set_1/Flood Report/Flood
 "
+"0","# Ejecutar el script que genera tus variables/tablas"
+"0",""
+"0","source(here(""2. Excel"", ""1. eso.R""))"
 "1",""
