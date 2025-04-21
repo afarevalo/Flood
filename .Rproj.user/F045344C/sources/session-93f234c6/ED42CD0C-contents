@@ -2,6 +2,8 @@ rm(list = ls())
 library(readxl)
 library(tidyverse)
 library(dplyr)
+library(here)
+
 cat("\014")
 Centro_ABC <- data.frame(
   Ano = c(20, 50, 100, 200, 500, 1500),
@@ -58,7 +60,26 @@ names(Centro_SDF) <- c(
   "Área Afectada  (%)", "Promedio  (m)", "Máxima  (m)"
 )
 
-source("2. Excel/2. eso e.R")
 base_nombres <- ls()
 cliente <- "Cliente ABC"
+
+# -------
+
 fecha <- format(Sys.Date(), "%B %Y")
+fecha <- paste0(toupper(substring(fecha, 1, 1)), substring(fecha, 2))
+
+# Rutas
+ruta_maps_flood <- "1. Mapas"
+ruta_maps_flood <- file.path(ruta_maps_flood, cliente,"Ubicaciones")
+
+ruta_codigo <- "3. Reporte"
+
+# -------
+
+# Definir la ruta a la carpeta temporal usando `here`
+ruta_temp <- here(file.path(ruta_codigo, "temp_maps"))
+
+# Verificar si existe y borrarla
+if (dir.exists(ruta_temp)) {
+  unlink(ruta_temp, recursive = TRUE, force = TRUE)
+  } 

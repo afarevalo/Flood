@@ -1,24 +1,26 @@
 ---
-title: ""
-author: ""
+title: ''
+author: ''
 date: "`r Sys.Date()`"
-mainfont: Arial
 output:
   pdf_document:
     latex_engine: xelatex
     keep_tex: true
-    pandoc_args: [
-      "-V", "geometry:landscape,top=5cm,left=2.5cm,bottom=2cm,right=2.5cm"
-    ]
+    pandoc_args:
+    - "-V"
+    - geometry:landscape,top=5cm,left=2.5cm,bottom=2cm,right=2.5cm
+  html_document:
+    df_print: paged
+mainfont: Arial
 header-includes:
-  - \usepackage{graphicx}
-  - \usepackage{xcolor}
-  - \usepackage{eso-pic}
-  - \usepackage{lipsum}
-  - \definecolor{azuloscuro}{RGB}{0,51,102}
-  - \definecolor{turquesa}{RGB}{0,174,239}
-editor_options: 
-  markdown: 
+- \usepackage{graphicx}
+- \usepackage{xcolor}
+- "\\usepackage{eso-pic}"
+- \usepackage{lipsum}
+- \definecolor{azuloscuro}{RGB}{0,51,102}
+- \definecolor{turquesa}{RGB}{0,174,239}
+editor_options:
+  markdown:
     wrap: 72
 ---
 
@@ -30,9 +32,8 @@ library(knitr)     # para usar kable
 library(here)      # puede fallar el source en los .Rmd <- here()
 
 # Ejecutar el script que genera tus variables/tablas
-
 source(here("2. Excel", "1. eso.R"))
-
+source(here("2. Excel", "2. eso e.R"))
 ```
 
 \thispagestyle{empty}
@@ -96,6 +97,78 @@ source(here("2. Excel", "1. eso.R"))
 
 \noindent \textbf{\textcolor{azuloscuro}{\fontsize{11}{13}\selectfont The following considerations were considered for `r cliente`:}} \vspace{0.5cm}
 
+```{r copiar_imagenes_temp_maps, include=FALSE}
+library(here)
+
+# Crear carpeta temporal para las imágenes sin espacios
+dir.create("temp_maps", showWarnings = FALSE)
+
+# Obtener rutas originales (con espacios)
+imagenes_origen <- list.files(
+  here(ruta_maps_flood), 
+  pattern = "(?i)\\.(png|jpg|jpeg)$", 
+  full.names = TRUE
+)
+
+# Copiar a carpeta temporal sin espacios
+file.copy(imagenes_origen, to = "temp_maps", overwrite = TRUE)
+```
+
+```{r tabla_flood_location, echo=FALSE, message=FALSE, warning=FALSE}
+library(kableExtra)
+
+# Mostrar tabla de flood_location
+flood_location %>%
+  kable(format = "latex", booktabs = TRUE, align = "c") %>%
+  kable_styling(
+    latex_options = c("striped", "scale_down", "hold_position"),
+    font_size = 11,
+    position = "center",
+    full_width = FALSE
+  ) %>%
+  row_spec(0, background = "azuloscuro", color = "white")
+```
+
+```{r insertar_imagenes_flood_location, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(kableExtra)
+
+# Listar imágenes
+imagenes <- list.files("temp_maps", pattern = "(?i)\\.(png|jpg|jpeg)$", full.names = TRUE)
+
+# Código LaTeX para insertar imágenes
+imagenes_latex <- paste0("\\includegraphics[width=0.3\\textwidth]{", imagenes, "}")
+
+# Asegurar que el número total sea múltiplo de 3
+falta <- 3 - (length(imagenes_latex) %% 3)
+if (falta != 3) {
+  imagenes_latex <- c(imagenes_latex, rep("", falta))
+}
+
+# Dividir en filas de 3 imágenes
+filas <- matrix(imagenes_latex, ncol = 3, byrow = TRUE)
+
+# Mostrar 2 filas por hoja (6 imágenes) con salto
+num_filas <- nrow(filas)
+for (i in seq(1, num_filas, by = 2)) {
+  bloque <- filas[i:min(i+1, num_filas), , drop = FALSE]
+  
+  tabla <- kable(
+    bloque,
+    format = "latex",
+    booktabs = TRUE,
+    escape = FALSE
+  ) %>%
+    kable_styling(
+      latex_options = c("hold_position"),
+      position = "center",
+      full_width = FALSE
+    )
+  
+  cat(tabla)
+  cat("\n\n\\vspace{0.8cm}\n\n")
+}
+```
+
 \newpage
 
 ```{r resultados_por_centro, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
@@ -142,6 +215,8 @@ for (i in seq_along(base_nombres)) {
   )
 }
 ```
+
+\newpage
 
 \newpage
 

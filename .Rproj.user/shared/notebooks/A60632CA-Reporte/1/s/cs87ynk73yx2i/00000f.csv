@@ -1,0 +1,20 @@
+"0","# Insertar imágenes desde carpeta limpia
+for (img in imagenes_limpias) {
+  cat(""\\newpage\n"")
+  cat(sprintf(""\\begin{center}\n\\includegraphics[width=0.9\\textwidth]{temp_maps/%s}\n\\end{center}\n\n"", img))
+}
+"
+"1","\newpage
+"
+"1","\begin{center}
+\includegraphics[width=0.9\textwidth]{temp_maps/01.Centro_ABC.png}
+\end{center}
+
+"
+"1","\newpage
+"
+"1","\begin{center}
+\includegraphics[width=0.9\textwidth]{temp_maps/02.Centro_SDF.png}
+\end{center}
+
+"
