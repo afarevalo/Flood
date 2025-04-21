@@ -69,12 +69,12 @@ fecha <- format(Sys.Date(), "%B %Y")
 fecha <- paste0(toupper(substring(fecha, 1, 1)), substring(fecha, 2))
 
 # Rutas
-ruta_maps_flood <- "1. Mapas"
-ruta_maps_flood <- file.path(ruta_maps_flood, cliente,"Ubicaciones")
+ruta_maps <- "1. Mapas"
+ruta_maps_flood <- file.path(ruta_maps, cliente,"Ubicaciones")
 
 # ------
 
-ruta_return <- here(file.path(ruta_maps_flood, cliente))
+ruta_return <- here(file.path(ruta_maps, cliente))
 
 base_limpio <- gsub("_", " ", base_nombres)
 
