@@ -3,7 +3,7 @@
     "path": "~/GitHub/Problem_Set_1/Flood Report/Flood/3. Reporte/Reporte.Rmd",
     "project_path": "3. Reporte/Reporte.Rmd",
     "type": "r_markdown",
-    "hash": "109142697",
+    "hash": "3161855831",
     "contents": "",
     "dirty": false,
     "created": 1745233623141.0,
@@ -12,8 +12,8 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "307,0",
-        "scrollLine": "302",
+        "cursorPosition": "29,3",
+        "scrollLine": "13",
         "last_setup_crc32": "",
         "rmdVisualMode": "false",
         "rmdVisualCollapsedChunks": "",
@@ -22,11 +22,11 @@
         "docOutlineVisible": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1745257991,
+    "lastKnownWriteTime": 1745268425,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1745257991617,
+    "last_content_update": 1745268425603,
     "read_only": false,
     "read_only_alternatives": []
 }

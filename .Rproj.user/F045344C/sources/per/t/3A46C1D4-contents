@@ -88,4 +88,4 @@ ruta_temp <- here(file.path(ruta_codigo, "temp_maps"))
 # Verificar si existe y borrarla
 if (dir.exists(ruta_temp)) {
   unlink(ruta_temp, recursive = TRUE, force = TRUE)
-  } 
+} 
