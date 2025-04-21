@@ -15,7 +15,7 @@ mainfont: Arial
 header-includes:
 - \usepackage{graphicx}
 - \usepackage{xcolor}
-- "\\usepackage{eso-pic}"
+- \usepackage{eso-pic}
 - \usepackage{lipsum}
 - \definecolor{azuloscuro}{RGB}{0,51,102}
 - \definecolor{turquesa}{RGB}{0,174,239}
@@ -135,29 +135,33 @@ library(kableExtra)
 # Listar imágenes
 imagenes <- list.files("temp_maps", pattern = "(?i)\\.(png|jpg|jpeg)$", full.names = TRUE)
 
-# Código LaTeX para insertar imágenes
+# Extraer títulos desde nombres de archivo
+titulos <- tools::file_path_sans_ext(basename(imagenes))
+
+# Crear LaTeX para títulos con formato azuloscuro y letra blanca
+titulos_latex <- paste0("\\multicolumn{1}{>{\\centering\\arraybackslash}m{0.3\\textwidth}}{\\cellcolor{azuloscuro}{\\color{white}\\textbf{", titulos, "}}}")
+
+# Crear LaTeX para imágenes
 imagenes_latex <- paste0("\\includegraphics[width=0.3\\textwidth]{", imagenes, "}")
 
-# Asegurar que el número total sea múltiplo de 3
+# Asegurar múltiplos de 3
 falta <- 3 - (length(imagenes_latex) %% 3)
 if (falta != 3) {
   imagenes_latex <- c(imagenes_latex, rep("", falta))
+  titulos_latex <- c(titulos_latex, rep("", falta))
 }
 
-# Dividir en filas de 3 imágenes
-filas <- matrix(imagenes_latex, ncol = 3, byrow = TRUE)
+# Dividir en filas de 3
+filas_titulos <- matrix(titulos_latex, ncol = 3, byrow = TRUE)
+filas_imagenes <- matrix(imagenes_latex, ncol = 3, byrow = TRUE)
 
-# Mostrar 2 filas por hoja (6 imágenes) con salto
-num_filas <- nrow(filas)
-for (i in seq(1, num_filas, by = 2)) {
-  bloque <- filas[i:min(i+1, num_filas), , drop = FALSE]
+# Mostrar cada bloque de títulos + imágenes
+for (i in seq_len(nrow(filas_titulos))) {
+  bloque_titulos <- filas_titulos[i, , drop = FALSE]
+  bloque_imagenes <- filas_imagenes[i, , drop = FALSE]
   
-  tabla <- kable(
-    bloque,
-    format = "latex",
-    booktabs = TRUE,
-    escape = FALSE
-  ) %>%
+  tabla <- kable(rbind(bloque_titulos, bloque_imagenes),
+                 format = "latex", booktabs = TRUE, escape = FALSE) %>%
     kable_styling(
       latex_options = c("hold_position"),
       position = "center",
@@ -166,34 +170,39 @@ for (i in seq(1, num_filas, by = 2)) {
   
   cat(tabla)
   cat("\n\n\\vspace{0.8cm}\n\n")
+  
+  # Salto si hay más
+  if (i < nrow(filas_titulos)) {
+    cat("\\newpage\n")
+  }
 }
 ```
 
 \newpage
 
 ```{r resultados_por_centro, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+
 library(kableExtra)
 
 for (i in seq_along(base_nombres)) {
   centro <- base_nombres[i]
   nombre_limpio <- gsub("_", " ", centro)
   data_tmp <- get(centro)
-  
-  # Solo mostramos "Results" en la primera iteración
+
+  # Insertar encabezado solo en la primera iteración
   if (i == 1) {
-    cat("\\newpage\n")
     cat("\\noindent \\textbf{\\textcolor{azuloscuro}{\\fontsize{28}{32}\\selectfont Results}} \\label{sec:results}\n\n")
     cat("\\vspace{0.5cm}\n\n")
   } else {
     cat("\\newpage\n")
   }
-  
-  # Título y descripción por centro
+
+  # Título por centro
   cat(sprintf("\\textbf{\\textcolor{turquesa}{\\fontsize{16}{20}\\selectfont %s}}\n\n", nombre_limpio))
   cat("\\vspace{0.5cm}\n\n")
   cat(sprintf("\\fontsize{11}{13}\\selectfont The following table shows the average and maximum flood in meters for the location %s.\n\n", nombre_limpio))
   cat("\\vspace{1cm}\n\n")
-  
+
   # Tabla
   print(
     kable(data_tmp, format = "latex", booktabs = TRUE, align = "c") %>%
@@ -214,6 +223,7 @@ for (i in seq_along(base_nombres)) {
       row_spec(0, background = "azuloscuro", color = "white")
   )
 }
+
 ```
 
 \newpage
