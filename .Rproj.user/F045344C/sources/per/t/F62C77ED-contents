@@ -247,76 +247,65 @@ for (i in seq_along(base_nombres)) {
 \newpage
 
 ```{r return_periods_imagenes, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
-library(here)
 library(kableExtra)
 
-# Crear sección
-cat("\\newpage\n")
-cat("\\noindent \\textbf{\\textcolor{azuloscuro}{\\fontsize{28}{32}\\selectfont Return Periods}}\n")
-cat("\\vspace{0.5cm}\n\n")
-
-# Iterar sobre cada cliente limpio
-for (centro in base_limpio) {
-
-  # Subtítulo por cliente
-  cat(sprintf("\\textbf{\\textcolor{turquesa}{\\fontsize{16}{20}\\selectfont %s}}\n\n", centro))
-  cat("\\vspace{0.5cm}\n\n")
-
-  # Ruta donde están las imágenes para este cliente
-  carpeta <- here(ruta_return, centro)
-
-  if (!dir.exists(carpeta)) {
-    cat("\\textit{No images found for this location.}\n\n\\vspace{1cm}\n\n")
-    next
-  }
-
-  # Buscar imágenes
-  imagenes <- list.files(carpeta, pattern = "(?i)\\.(png|jpg|jpeg)$", full.names = TRUE)
-
+for (i in seq_along(base_limpio)) {
+  centro <- base_limpio[i]
+  ruta_centro <- here::here(ruta_return, centro)
+  
+  imagenes <- list.files(ruta_centro, pattern = "(?i)\\.(png|jpg|jpeg)$", full.names = TRUE)
+  
+  # Si no hay imágenes
   if (length(imagenes) == 0) {
-    cat("\\textit{No images found for this location.}\n\n\\vspace{1cm}\n\n")
+    cat(sprintf("\\textbf{\\textcolor{turquesa}{\\fontsize{16}{20}\\selectfont Return Periods – %s}}\n\n", centro))
+    cat("\\vspace{0.2cm}\n\\textit{\\fontsize{10}{12} No images found for this location.} \n\n\\newpage\n")
     next
   }
 
-  # Títulos (desde el nombre del archivo sin extensión)
-  nombres <- tools::file_path_sans_ext(basename(imagenes))
+  # Títulos
+  titulos <- tools::file_path_sans_ext(basename(imagenes))
   titulos_latex <- paste0(
     "\\multicolumn{1}{>{\\centering\\arraybackslash}m{0.3\\textwidth}}",
-    "{\\cellcolor{azuloscuro}{\\color{white}\\textbf{", nombres, "}}}"
+    "{\\cellcolor{azuloscuro}{\\color{white}\\textbf{", titulos, "}}}"
   )
-
-  # LaTeX imágenes
   imagenes_latex <- paste0("\\includegraphics[width=0.3\\textwidth]{", imagenes, "}")
-
-  # Completar múltiplos de 3
+  
+  # Múltiplos de 3
   falta <- 3 - length(imagenes_latex) %% 3
   if (falta != 3) {
-    imagenes_latex <- c(imagenes_latex, rep("", falta))
     titulos_latex  <- c(titulos_latex,  rep("", falta))
+    imagenes_latex <- c(imagenes_latex, rep("", falta))
   }
 
-  # Dividir en bloques de 3
+  # Matrices 3 columnas
   filas_titulos  <- matrix(titulos_latex,  ncol = 3, byrow = TRUE)
   filas_imagenes <- matrix(imagenes_latex, ncol = 3, byrow = TRUE)
 
-  for (i in seq_len(nrow(filas_titulos))) {
-    tabla <- rbind(filas_titulos[i, ], filas_imagenes[i, ])
-    cat(
-      kable(tabla,
-            format   = "latex",
-            booktabs = TRUE,
-            escape   = FALSE) %>%
+  num_filas <- nrow(filas_titulos)
+
+  # Imprimir por pares (2 filas -> 1 hoja)
+  for (j in seq(1, num_filas, by = 2)) {
+    cat("\\newpage\n")
+    cat(sprintf("\\textbf{\\textcolor{turquesa}{\\fontsize{16}{20}\\selectfont Return Periods – %s}}\n\n", centro))
+    cat("\\vspace{0.3cm}\n")
+
+    bloque_titulos  <- filas_titulos[j:min(j+1, num_filas), , drop = FALSE]
+    bloque_imagenes <- filas_imagenes[j:min(j+1, num_filas), , drop = FALSE]
+
+    for (k in seq_len(nrow(bloque_titulos))) {
+      tabla <- kable(rbind(bloque_titulos[k, ], bloque_imagenes[k, ]),
+                     format = "latex", booktabs = TRUE, escape = FALSE) %>%
         kable_styling(
           latex_options = "hold_position",
           position      = "center",
           full_width    = FALSE
         )
-    )
-    cat("\n\\vspace{0.8cm}\n\n")
+      cat(tabla)
+      cat("\n\n\\vspace{0.5cm}\n\n")
+    }
   }
-
-  cat("\\newpage\n")
 }
+
 
 ```
 
