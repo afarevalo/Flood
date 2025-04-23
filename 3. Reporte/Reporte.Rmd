@@ -199,7 +199,6 @@ for (i in seq_len(nrow(filas_titulos))) {
 \newpage
 
 ```{r resultados_por_centro, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
-
 library(kableExtra)
 
 for (i in seq_along(base_nombres)) {
@@ -207,40 +206,61 @@ for (i in seq_along(base_nombres)) {
   nombre_limpio <- gsub("_", " ", centro)
   data_tmp <- get(centro)
 
-  # Insertar encabezado solo en la primera iteración
   if (i == 1) {
     cat("\\noindent \\textbf{\\textcolor{azuloscuro}{\\fontsize{28}{32}\\selectfont Results}} \\label{sec:results}\n\n")
-    cat("\\vspace{0.5cm}\n\n")
+    cat("\\vspace{0.3cm}\n\n")
   } else {
     cat("\\newpage\n")
   }
 
-  # Título por centro
+  # Título del centro y descripción
   cat(sprintf("\\textbf{\\textcolor{turquesa}{\\fontsize{16}{20}\\selectfont %s}}\n\n", nombre_limpio))
-  cat("\\vspace{0.5cm}\n\n")
   cat(sprintf("\\fontsize{11}{13}\\selectfont The following table shows the average and maximum flood in meters for the location %s.\n\n", nombre_limpio))
-  cat("\\vspace{1cm}\n\n")
 
-  # Tabla
-  print(
-    kable(data_tmp, format = "latex", booktabs = TRUE, align = "c") %>%
-      add_header_above(c(
-        "Periodo de Retorno" = 2,
-        "Profundidad Inundación Ríos" = 3,
-        "Profundidad Aguas Superficiales" = 3
-      ),
-      escape = FALSE,
-      color = "white",
-      background = "azuloscuro") %>%
-      kable_styling(
-        latex_options = c("striped", "scale_down", "hold_position"),
-        font_size = 11,
-        position = "center",
-        full_width = FALSE
-      ) %>%
-      row_spec(0, background = "azuloscuro", color = "white")
-  )
+  # Tabla de resultados
+  tabla <- kable(data_tmp, format = "latex", booktabs = TRUE, align = "c") %>%
+    add_header_above(c(
+      "Periodo de Retorno" = 2,
+      "Profundidad Inundación Ríos" = 3,
+      "Profundidad Aguas Superficiales" = 3
+    ),
+    escape = FALSE,
+    color = "white",
+    background = "azuloscuro") %>%
+    kable_styling(
+      latex_options = c("striped", "scale_down", "hold_position"),
+      font_size = 11,
+      position = "center",
+      full_width = FALSE
+    ) %>%
+    row_spec(0, background = "azuloscuro", color = "white")
+
+  cat("\n\n")
+  print(tabla)
+  cat("\n\n")
+
+# Insertar imagen si existe (como tabla 1x1)
+img_path <- file.path("temp_maps", paste0(nombre_limpio, ".png"))
+if (file.exists(img_path)) {
+  cat("\n\\vspace{0.2cm}\n")
+  tabla_img <- kable(
+    matrix(paste0("\\includegraphics[width=0.37\\textwidth]{", img_path, "}"), nrow = 1),
+    format = "latex", escape = FALSE, booktabs = TRUE
+  ) %>%
+    kable_styling(
+      font_size = 8,
+      latex_options = c("hold_position", "scale_down"),
+      position = "center",
+      full_width = FALSE
+    ) %>%
+    row_spec(1, extra_css = "border: none; padding: 0px;")
+  cat(tabla_img)
 }
+
+
+}
+
+
 
 ```
 
