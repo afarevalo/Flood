@@ -1,0 +1,4 @@
+"0","# Ejecutar el script que genera tus variables/tablas
+source(here(""2. Excel"", ""1. eso.R""))
+"
+"1",""

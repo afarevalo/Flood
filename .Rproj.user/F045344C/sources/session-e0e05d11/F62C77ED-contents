@@ -1,0 +1,376 @@
+---
+title: ""
+author: ""
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    keep_tex: true
+    pandoc_args:
+      - "-V"
+      - geometry:landscape,top=5cm,left=2.5cm,bottom=2cm,right=2.5cm
+  html_document:
+    df_print: paged
+mainfont: Arial
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{xcolor}
+  - \usepackage{eso-pic}
+  - \usepackage{lipsum}
+  - \definecolor{azuloscuro}{RGB}{0,51,102}
+  - \definecolor{turquesa}{RGB}{0,174,239}
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \renewcommand{\headrulewidth}{0pt}
+  - \fancyfoot[R]{\thepage}
+editor_options:
+  markdown:
+    wrap: 72
+---
+```{r setup, include=FALSE}
+# Cargar librerías necesarias
+library(readxl)    # si usas read_excel
+library(dplyr)     # si haces transformaciones
+library(knitr)     # para usar kable
+library(here)      # puede fallar el source en los .Rmd <- here()
+
+# Ejecutar el script que genera tus variables/tablas
+source(here("2. Excel", "1. eso.R"))
+source(here("2. Excel", "2. eso e.R"))
+```
+
+\thispagestyle{empty}
+
+\AddToShipoutPictureBG*{%
+    \AtStockLowerLeft{%
+        \includegraphics[width=\paperwidth,height=\paperheight]{image.png}%
+    }%
+}
+
+\AddToShipoutPicture*{%
+    \AtStockUpperLeft{%
+        \hspace*{4 cm}%
+        \raisebox{-3.5cm}{\includegraphics[height=0.6cm]{Logo_Portada.png}
+}%
+    }%
+}
+
+\vspace*{4cm}
+\begin{flushleft}
+    \hspace*{1.5cm}{\fontsize{38}{45}\selectfont\color{white}\textbf{Reporte Modelo de Inundación}}\\[0.8cm]
+    \hspace*{1.5cm}{\fontsize{24}{30}\selectfont\color{white}Análisis de Portafolio}\\[1.2cm]
+    \hspace*{1.5cm}{\fontsize{24}{30}\selectfont\color{white}`r cliente`}\\[0.4cm]
+    \hspace*{1.5cm}{\Large\color{white}`r fechaEsp`}
+\end{flushleft}
+
+\vfill
+\begin{flushleft}
+    \hspace*{1.5cm}{\small\color{white}Un negocio de Marsh McLennan}
+\end{flushleft}
+
+\clearpage
+
+\noindent \textbf{\textcolor{turquesa}{\fontsize{16}{20}\selectfont Contenido}}
+
+\noindent
+
+\begin{enumerate}
+    \item {\fontsize{11}{13}\selectfont Resumen \dotfill \pageref{sec:summary}}
+    \item {\fontsize{11}{13}\selectfont Resultados \dotfill \pageref{sec:results}}
+\end{enumerate}
+
+\newpage
+
+\noindent \textbf{\textcolor{turquesa}{\fontsize{16}{20}\selectfont Consideraciones}} \vspace{0.5cm}
+
+\noindent \fontsize{11}{13}\selectfont La tecnología utilizada y las referencias proporcionadas para la generación de esta información se basan en datos científicos, modelos matemáticos y experiencia codificada de investigadores y especialistas en el área de Data Management.
+
+\begin{itemize}
+    \item {\fontsize{11}{13}\selectfont El presente informe, así como los análisis, modelos y predicciones que contiene este documento, ("Información"), se basan en datos provistos por MARSH a través de nuestro cliente: `r cliente` y gestionados a través de la tecnología informática de evaluación de riesgos propiedad de JBA Risk Management.}
+    \item {\fontsize{11}{13}\selectfont Es importante mencionar que la exactitud de las predicciones depende en gran medida de la precisión y calidad de los datos proporcionados por el cliente: `r cliente` a los especialistas de MARSH.}
+    \item {\fontsize{11}{13}\selectfont La gestión de la información proporcionada por `r cliente` se realiza a través del licenciamiento de MARSH en JBA Risk Management, haciendo uso de los marcos regulatorios para la protección de información confidencial; prohibiendo su distribución con terceros sin el previo consentimiento escrito de MARSH y JBA Risk Management.}
+    \item {\fontsize{11}{13}\selectfont La Información descrita dentro del reporte generado por Marsh, sólo puede ser utilizada con el propósito de estudio e interpretación de resultados para: `r cliente` Este documento no puede ser utilizada bajo ninguna circunstancia en el desarrollo y/ o calibración de cualquier oferta de productos o servicios que compita con JBA Risk Management y MARSH.}
+\end{itemize}
+
+\fontsize{11}{13}\selectfont Los mapas globales de inundaciones de JBA Risk Management, y la gestión de información de Marsh, proporcionan información indicativa sobre la extensión y profundidad de las inundaciones para ríos no defendidos y riesgos de inundaciones de aguas superficiales para los periodos de retorno de 20, 50, 100, 200, 500 y 1.500 años. Los datos digitales de elevación subyacentes son una combinación de Modelos Digitales del Terreno (MDT) de una variedad de fuentes.
+
+\fontsize{11}{13}\selectfont Para las actualizaciones cartográficas posteriores a 2023, se utiliza ampliamente el DTMlite de Airbus WorldDEM. La cartografía de los riesgos de inundación se proporciona a escala mundial con una resolución de 30 m para todos los ríos y para las aguas superficiales. Los mapas se crean simulando los totales de precipitaciones de diseño y los volúmenes de caudal de los ríos, permitiendo que la inundación asociada a cada uno de ellos se extienda por el terreno circundante mediante un software de modelización hidráulica. Con el fin de estimar los caudales de los ríos y las cantidades de lluvia para cada período de retorno en cualquier lugar del mundo, JBA ha desarrollado modelos hidrológicos adecuados para la cartografía a escala mundial.
+
+\newpage
+
+\noindent \textbf{\textcolor{azuloscuro}{\fontsize{28}{32}\selectfont Resumen}} \label{sec:summary}
+\vspace{0.5cm}
+
+\fontsize{11}{13}\selectfont Este informe probabilístico sirve como herramienta para evaluar y cuantificar su riesgo a inundación. Este análisis utiliza modelos matemáticos y estadísticos para simular diferentes escenarios de inundación y determinar la probabilidad de que ocurran en un momento dado. Para la creación de este reporte se utilizan datos históricos, topográficos y de precipitación sobre zonas determinadas. Los resultados se presentan para los periodos de retorno de 20, 50, 100, 200, 500 y 1500 años con resultados que muestran las áreas afectadas y la dimensión de esta.
+
+\fontsize{11}{13}\selectfont El propósito de este informe es proporcionar a `r cliente` una Evaluación de Riesgo de Inundación.
+
+\fontsize{11}{13}\selectfont El alcance del proyecto incluye importar directamente los datos de entrada, según lo proporcionado por el cliente, en el modelo y ejecutar los análisis. El conjunto de eventos de inundación global de JBA permite examinar los patrones de inundación y evaluar las exposiciones a escala regional, continental y global para `r cliente`. El modelo utiliza métodos estadísticos sofisticados, junto con procesos de modelos físicos de lluvia y escorrentía, para capturar las posibles correlaciones espaciales y temporales de inundaciones causadas por ciclones tropicales, precipitaciones extremas y caudal de río. Las zonas de acumulación hidrológica se utilizan para comprender mejor las correlaciones de inundación e identificar áreas que pueden verse afectadas simultáneamente por el mismo evento, además proporcionan una unidad geográfica alternativa a los límites de la administración política para el análisis de agregación y acumulación. Los resultados por inundación de río representan inundaciones causadas por toda agua que este en movimiento (ríos, caños, drenajes). Los resultados por agua superficial representan inundaciones causadas por estancamiento de agua y desbordamiento de masas de agua que se hallan depositadas en depresiones de un terreno.
+
+\fontsize{11}{13}\selectfont Los modelos catastróficos a nivel país de JBA incorporan sus datos de inundaciones de alta resolución y proyecciones climáticas reconocidas internacionalmente, lo que permite evaluar la línea de base actual y el riesgo futuro de inundación de ríos y aguas superficiales con confianza para todos los países del mundo.
+
+\fontsize{11}{13}\selectfont Los resultados proporcionados por este informe son importantes para tomar decisiones sobre la prevención del uso del suelo, la construcción de infraestructura y la planificación de recuperación después de inundación. Se recomienda tomar medidas preventivas y de mitigación para reducir el impacto de las inundaciones y proteger vida humana, propiedad e infraestructura, así como tomarlo en cuenta para salvaguardar maquinaria, insumos o inventarios importantes que puedan causar la interrupción total o parcial del negocio.
+
+\newpage
+
+\noindent \textbf{\textcolor{azuloscuro}{\fontsize{11}{13}\selectfont Para `r cliente` se tuvieron en cuenta las siguientes consideraciones:}} \vspace{0.5cm}
+```{r copiar_imagenes_temp_maps, include=FALSE}
+library(here)
+# Crear carpeta temporal para las imágenes sin espacios
+dir.create("temp_maps", showWarnings = FALSE)
+
+# Obtener rutas originales (con espacios)
+imagenes_origen <- list.files(
+    here(ruta_maps_flood), 
+    pattern = "(?i)\\.(png|jpg|jpeg)$", 
+    full.names = TRUE
+)
+
+# Copiar a carpeta temporal sin espacios
+file.copy(imagenes_origen, to = "temp_maps", overwrite = TRUE)
+```
+
+```{r tabla_flood_location, echo=FALSE, message=FALSE, warning=FALSE}
+library(kableExtra)
+
+# Mostrar tabla de flood_location
+flood_location %>%
+    kable(format = "latex", booktabs = TRUE, align = "c") %>%
+    kable_styling(
+        latex_options = c("striped", "scale_down", "hold_position"),
+        font_size = 11,
+        position = "center",
+        full_width = FALSE
+    ) %>%
+    row_spec(0, background = "azuloscuro", color = "white")
+```
+
+\vspace{1cm}
+
+```{r insertar_imagenes_flood_location, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(kableExtra)
+
+# Listar imágenes y extraer títulos
+imagenes <- list.files("temp_maps",
+    pattern = "(?i)\\.(png|jpg|jpeg)$",
+    full.names = TRUE)
+titulos <- tools::file_path_sans_ext(basename(imagenes))
+
+# Preparar LaTeX de títulos e imágenes
+titulos_latex  <- paste0(
+    "\\multicolumn{1}{>{\\centering\\arraybackslash}m{0.3\\textwidth}}",
+    "{\\cellcolor{azuloscuro}{\\color{white}\\textbf{", titulos, "}}}"
+)
+imagenes_latex <- paste0("\\includegraphics[width=0.3\\textwidth]{", imagenes, "}")
+
+# Completar a múltiplos de 3
+falta <- 3 - length(imagenes_latex) %% 3
+if (falta != 3) {
+    titulos_latex  <- c(titulos_latex,  rep("", falta))
+    imagenes_latex <- c(imagenes_latex, rep("", falta))
+}
+
+# Dividir en filas de 3
+filas_titulos  <- matrix(titulos_latex,  ncol = 3, byrow = TRUE)
+filas_imagenes <- matrix(imagenes_latex, ncol = 3, byrow = TRUE)
+
+# Renderizar cada bloque
+for (i in seq_len(nrow(filas_titulos))) {
+
+    # para bloques 2,3,...: nueva página y espacio flexible arriba
+    if (i > 1) {
+        cat("\\newpage\n")
+        cat("\\vspace*{\\fill}\n")
+    }
+    
+    # generamos la tabla 3x1
+    tabla <- rbind(filas_titulos[i, ], filas_imagenes[i, ])
+    cat(
+        kable(tabla,
+            format     = "latex",
+            booktabs   = TRUE,
+            escape     = FALSE) %>%
+        kable_styling(
+            latex_options = "hold_position",
+            position      = "center",
+            full_width    = FALSE
+        )
+    )
+    cat("\n")
+    
+    # para bloques 2,3,...: espacio flexible abajo
+    if (i > 1) {
+        cat("\\vspace*{\\fill}\n")
+    } else {
+        # en el primer bloque mantén el pequeño espacio que ya usabas
+        cat("\\vspace{0.8cm}\n")
+    }
+} 
+```
+
+\newpage
+
+```{r resultados_y_return_y_return_periods, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(kableExtra)
+
+# niveles para ordenar tus imágenes de retorno
+orden_retorno <- c("1-20","1-50","1-100","1-200","1-500","1-1500")
+
+for (i in seq_along(base_nombres)) {
+  
+    # objeto, nombre limpio y data
+    centro_obj    <- base_nombres[i]
+    nombre_limpio <- base_limpio[i]
+    data_tmp      <- get(centro_obj)
+    
+    # — SECTION RESULTS (solo label en la primera iteración) —
+    if (i == 1) {
+        cat("\\noindent \\textbf{\\textcolor{azuloscuro}{\\fontsize{28}{32}\\selectfont Resultados}} \\label{sec:results}\n\n")
+        cat("\\vspace{0.3cm}\n\n")
+    } else {
+        cat("\\newpage\n")  # nueva página para cada centro salvo el primero
+    }
+    
+    # — Título y descripción de la tabla —
+    cat(sprintf(
+        "\\textbf{\\textcolor{turquesa}{\\fontsize{16}{20}\\selectfont %s}}\n\n",
+        nombre_limpio
+    ))
+    cat(sprintf(
+        "\\fontsize{11}{13}\\selectfont La siguiente tabla muestra la inundación promedio y máxima en metros para la ubicación %s.\n\n",
+        nombre_limpio
+    ))
+    
+    # — Construir e imprimir la tabla de resultados —
+    tabla <- kable(
+        data_tmp,
+        format    = "latex",
+        booktabs  = TRUE,
+        align     = "c"
+    ) %>%
+        add_header_above(c(
+            "Periodo de Retorno" = 2,
+            "Profundidad Inundación Ríos" = 3,
+            "Profundidad de Aguas Superficiales" = 3
+        ),
+        escape     = FALSE,
+        color      = "white",
+        background = "azuloscuro"
+        ) %>%
+        kable_styling(
+            latex_options = c("striped","scale_down","hold_position"),
+            font_size     = 11,
+            position      = "center",
+            full_width    = FALSE
+        ) %>%
+        row_spec(0, background = "azuloscuro", color = "white")
+        
+    cat("\n")
+    print(tabla)
+    cat("\n\n")
+    
+    # — Insertar mapa si existe (temp_maps/<Nombre limpio>.png) —
+    img_map <- file.path("temp_maps", paste0(nombre_limpio, ".png"))
+    if (file.exists(img_map)) {
+        cat("\\begin{center}\n")
+        cat(sprintf("\\includegraphics[width=0.37\\textwidth]{%s}\n", img_map))
+        cat("\\end{center}\n\n")
+    }
+    
+    # — Return Periods (solo si hay imágenes) —
+    ruta_centro <- here::here(ruta_return, nombre_limpio)
+    imgs        <- list.files(ruta_centro,
+        pattern   = "(?i)\\.(png|jpe?g)$",
+        full.names= TRUE)
+    if (length(imgs) > 0) {
+        # nueva página para Return Periods
+        cat("\\newpage\n")
+        cat(sprintf(
+            "\\textbf{\\textcolor{turquesa}{\\fontsize{16}{20}\\selectfont %s – Períodos de     Retorno}}\n\n",
+            nombre_limpio
+        ))
+        cat("\\vspace{0.3cm}\n")
+        
+        # ordenar las imágenes según el vector orden_retorno
+        nombres_archivos <- tools::file_path_sans_ext(basename(imgs))
+        df_imgs <- data.frame(
+            nombre = nombres_archivos,
+            ruta   = imgs,
+            stringsAsFactors = FALSE
+        )
+        df_imgs$ret <- regmatches(df_imgs$nombre, regexpr("1-\\d+", df_imgs$nombre))
+        df_imgs$ret <- factor(df_imgs$ret, levels = orden_retorno, ordered = TRUE)
+        df_imgs    <- df_imgs[order(df_imgs$ret), ]
+        
+        # construir celdas LaTeX de títulos e imágenes
+        tit_latex <- paste0(
+            "\\multicolumn{1}{>{\\centering\\arraybackslash}m{0.3\\textwidth}}",
+            "{\\cellcolor{azuloscuro}{\\color{white}\\textbf{",
+            df_imgs$nombre, "}}}"
+        )
+        img_latex <- paste0(
+            "\\includegraphics[width=0.3\\textwidth]{",
+            df_imgs$ruta, "}"
+        )
+        
+        # rellenar para múltiplos de 3
+        pad <- 3 - length(img_latex) %% 3
+        if (pad != 3) {
+            tit_latex <- c(tit_latex, rep("", pad))
+            img_latex <- c(img_latex, rep("", pad))
+        }
+        
+        filas_tit <- matrix(tit_latex, ncol = 3, byrow = TRUE)
+        filas_img <- matrix(img_latex, ncol = 3, byrow = TRUE)
+        nfilas    <-
+nrow(filas_tit)
+        
+        # imprimir de 2 filas (título+imagen) por "subpágina"
+        for (j in seq(1, nfilas, by = 2)) {
+            cat("\\begin{center}\n")
+            for (k in j:min(j+1, nfilas)) {
+                mini_tabla <- kable(
+                    rbind(filas_tit[k,], filas_img[k,]),
+                    format   = "latex",
+                    booktabs = TRUE,
+                    escape   = FALSE
+                ) %>%
+                    kable_styling(
+                        latex_options = "hold_position",
+                        full_width    = FALSE
+                    )
+                cat(mini_tabla, "\n\n")
+            }
+            cat("\\end{center}\n")
+            cat("\\vspace{0.5cm}\n")
+            if (j + 2 <= nfilas) cat("\\clearpage\n")
+        }
+    }
+}
+
+# — Un único salto para “vaciar” flotantes y pasar a Disclaimer
+cat("\\clearpage\n")
+
+# — Logo y Disclaimer en la misma pasada —
+cat("\\noindent\\includegraphics[width=3cm]{Logo.png}\n\n")
+cat("\\vspace{1cm}\n\n")
+cat("\\noindent\\textbf{\\textcolor{azuloscuro}{")
+cat("\\fontsize{28}{32}\\selectfont Descarga de Responsabilidad}}\n\n")
+
+# — Texto del Disclaimer —
+cat("\\fontsize{11}{13}\\selectfont Este documento y cualquier recomendación, análisis, o recomendación hecha por Marsh (colectivamente el “Análisis de Marsh”) está dirigida únicamente a esta entidad identificada como el destinatario (usted). Este documento contiene información confidencial propiedad de Marsh y no podrá ser compartida con tercero alguno, incluyendo otros productores de seguros sin el consentimiento previo y por escrito de Marsh. Cualquier declaración relacionada con asuntos actuariales, fiscales, contables, o legales está basada únicamente en nuestra experiencia como corredores de seguros y consultores de riesgos, y no deberá interpretarse como asesoría, por tanto, deberá consultar a su propio asesor profesional. Cualquier modelo, análisis, o proyección estará sujeta a sus debidas reservas y el análisis de Marsh podría resultar materialmente afectado si cualquier condición, suposición, información o factor resultara inexacto o incompleto o deba modificarse.\n\n")
+
+cat("\\textbf{Datos Copyright © JBA Risk Management Limited 2024. Todos los derechos reservados.}\n\n")
+
+cat("\\fontsize{11}{13}\\selectfont Los datos son el resultado de la modelización de peligros naturales que son inciertos. No se hacen garantías sobre la integridad, corrección o actualidad de la información. JBA no puede predecir el futuro, y todos los datos sobre cambio climático deben ser utilizados con precaución y basados en una comprensión sólida de las limitaciones e incertidumbres de dichos datos.\n\n")
+
+cat("\\fontsize{11}{13}\\selectfont Los datos y servicios climáticos de JBA se basan en datos de organizaciones de terceros (modelización climática) que JBA considera científicamente creíbles y en las propias metodologías de desarrollo robustas de JBA. Al mismo tiempo, estos modelos tienen deficiencias y limitaciones conocidas en su representación de los sistemas físicos relevantes y, dado que no hay observaciones del futuro, presentan profundas incertidumbres respecto a su capacidad para simular climas bajo posibles condiciones futuras. Al igual que los datos disponibles de los modelos climáticos de terceros, los datos de JBA son solo una ilustración de uno de los muchos cambios posibles que podrían ocurrir basados en uno o más escenarios climáticos idealizados. En consecuencia, JBA no puede ni representa, garantiza o asegura la precisión de la salida, sus indicaciones y estimaciones.\n\n")
+
+cat("\\fontsize{11}{13}\\selectfont No debe:\n\n")
+
+cat("\\begin{itemize}\n")
+cat("  \\item Utilizar los datos de JBA o los resultados de la evaluación con fines comerciales.\n")
+cat("  \\item Proporcionar los datos de JBA o los resultados de la evaluación, en su totalidad o en parte, a ningún tercero, excepto como parte de actividades de corretaje de seguros o para fines de informes externos, documentación regulatoria o según lo exija la ley.\n")
+cat("\\end{itemize}\n")
+```

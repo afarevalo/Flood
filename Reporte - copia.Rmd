@@ -1,0 +1,372 @@
+---
+title: ''
+author: ''
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    keep_tex: true
+    pandoc_args:
+      - "-V"
+      - geometry:landscape,top=5cm,left=2.5cm,bottom=2cm,right=2.5cm
+  html_document:
+    df_print: paged
+mainfont: Arial
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{xcolor}
+  - \usepackage{eso-pic}
+  - \usepackage{lipsum}
+  - \definecolor{azuloscuro}{RGB}{0,51,102}
+  - \definecolor{turquesa}{RGB}{0,174,239}
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \renewcommand{\headrulewidth}{0pt}
+  - \fancyfoot[R]{\thepage}
+editor_options:
+  markdown:
+    wrap: 72
+---
+```{r setup, include=FALSE}
+# Cargar librerías necesarias
+library(readxl)    # si usas read_excel
+library(dplyr)     # si haces transformaciones
+library(knitr)     # para usar kable
+library(here)      # puede fallar el source en los .Rmd <- here()
+
+# Ejecutar el script que genera tus variables/tablas
+source(here("2. Excel", "1. eso.R"))
+source(here("2. Excel", "2. eso e.R"))
+```
+\thispagestyle{empty}
+
+\AddToShipoutPictureBG*{%
+  \AtStockLowerLeft{%
+    \includegraphics[width=\paperwidth,height=\paperheight]{image.png}%
+  }%
+}
+
+\AddToShipoutPicture*{%
+  \AtStockUpperLeft{%
+    \hspace*{1.5cm}%
+    \raisebox{-4cm}{\includegraphics[height=0.6cm]{Logo_Portada.png}
+}%
+  }%
+}
+
+\vspace*{4cm}
+\begin{flushleft}
+  \hspace*{1.5cm}{\fontsize{38}{45}\selectfont\color{white}\textbf{Flood Model Report}}\\[0.8cm]
+  \hspace*{1.5cm}{\fontsize{24}{30}\selectfont\color{white}Portfolio Analysis}\\[1.2cm]
+  \hspace*{1.5cm}{\fontsize{24}{30}\selectfont\color{white}`r cliente`}\\[0.4cm]
+  \hspace*{1.5cm}{\Large\color{white}`r fecha`}
+\end{flushleft}
+
+\vfill
+\begin{flushleft}
+  \hspace*{1.5cm}{\small\color{white}A business of Marsh McLennan}
+\end{flushleft}
+
+\clearpage
+
+\noindent \textbf{\textcolor{turquesa}{\fontsize{16}{20}\selectfont Contenido}}
+
+\noindent
+
+\begin{enumerate}
+  \item {\fontsize{11}{13}\selectfont Summary \dotfill \pageref{sec:summary}}
+  \item {\fontsize{11}{13}\selectfont Results \dotfill \pageref{sec:results}}
+\end{enumerate}
+
+\newpage
+
+\noindent \textbf{\textcolor{turquesa}{\fontsize{16}{20}\selectfont Considerations}} \vspace{0.5cm}
+
+\noindent \fontsize{11}{13}\selectfont The technology used and the references provided for the generation of this information are based on scientific data, mathematical models, and encoded experience from researchers and specialists in the field of Data Management.
+
+\begin{itemize}
+  \item {\fontsize{11}{13}\selectfont The present report, as well as the analysis, models,    and predictions contained in this document ("Information", are based on data provided by    MARSH through our client: `r cliente` and managed through the risk         assessment computer technology owned by JBA Risk Management.}
+  \item {\fontsize{11}{13}\selectfont It is important to mention that the accuracy of the     predictions depends largely on the accuracy and quality of the data provided by the         client: `r cliente` to the MARSH specialists}
+  \item {\fontsize{11}{13}\selectfont The management of the information provided by `r cliente` is carried out through the licensing of MARSH in JBA Risk             Management, using regulatory frameworks for the protection of confidential information,     prohibiting its distribution to third parties without the prior written consent of MARSH    and JBA Risk Management.}
+  \item {\fontsize{11}{13}\selectfont The information described within the report generated   by Marsh can only be used for the purpose of studying and interpreting results for `r cliente`. This document cannot be used under any circumstances in the          development and/or calibration of any product or service offerings that competi with JBA    Risk Management and MARSH..}
+\end{itemize}
+
+\fontsize{11}{13}\selectfont The global flood maps from JBA Risk Management, and the information management from Marsh, provide indicative information about the extent and depth of flooding for undefended rivers and surface water flood risks for return periods of 20, 50, 100, 200, 500, and 1,500 years.The underlying digital elevation data is a combination of Digital Terrain Models (DTMs) from a variety of sources.
+
+\fontsize{11}{13}\selectfont For post-2020 map updates, Airbus WorldDEM's DTMlite is widely used. When MDT is not available, Intermap Technologies Inc.'s NEXTMAP World 30 Digital Surface Model (DSM) is used. Flood risk mapping is provided globally at a resolution of 30m for all rivers and surface waters. The maps are created by simulating design rainfall totals and river flow volumes, allowing the associated flooding to spread across the surrounding terrain using hydraulic modeling software. In order to estimate river flows and rainfall amounts for each return period anywhere in the world, JBA has developed suitable hydrological models for global-scale mapping.
+
+\newpage
+
+\noindent \textbf{\textcolor{azuloscuro}{\fontsize{28}{32}\selectfont Summary}} \label{sec:summary}
+\vspace{0.5cm}
+
+\fontsize{11}{13}\selectfont This probabilistic report serves as a tool to assess and quantify your flood risk. This analysis uses mathematical and statistical models to simulate different flood scenarios and determine the probability of their occurrence at a given time. Historical, topographic, and precipitation data are used to create this report for specific areas. The results are presented for return periods of 20, 50, 100, 200, 500, and 1500 years, showing the affected areas and their extent.
+
+\fontsize{11}{13}\selectfont The purpose of this report is to provide `r cliente` with a Flood Risk Assessment.
+
+\fontsize{11}{13}\selectfont The scope of the project includes directly importing input data, as provided by the client, into the model and running the analyses. The JBA Global Flood Event Set allows for examining flood patterns and assessing regional, continental, and global exposures for `r cliente`. The model utilizes sophisticated statistical methods, along with physical rainfall and runoff modeling processes, to capture potential spatial and temporal correlations of floods caused by tropical cyclones, extreme precipitation, and river discharge. Hydrological accumulation zones are used to better understand flood correlations and identify areas that may be simultaneously affected by the same event, providing an alternative geographic unit for aggregation and accumulation analysis beyond political administrative boundaries. River flood results represent floods caused by any moving water (rivers, streams, drains). Surface water results represent floods caused by water stagnation and overflow of water bodies deposited in depressions of the terrain.
+
+\fontsize{11}{13}\selectfont The country-level catastrophic models of JBA incorporate their high-resolution flood data and internationally recognized climate projections, allowing for the assessment of current baseline and future risk of river and surface water flooding with confidence for all countries worldwide.
+
+\fontsize{11}{13}\selectfont The results provided by this report are important for making decisions regarding land use prevention, infrastructure construction, and post-flood recovery planning. It is recommended to take preventive and mitigation measures to reduce the impact of floods and protect human life, property, and infrastructure, as well as to consider it in order to safeguard machinery, supplies, or important inventories that may cause total or partial business interruption.
+
+\newpage
+
+\noindent \textbf{\textcolor{azuloscuro}{\fontsize{11}{13}\selectfont The following considerations were considered for `r cliente`:}} \vspace{0.5cm}
+
+```{r copiar_imagenes_temp_maps, include=FALSE}
+library(here)
+
+# Crear carpeta temporal para las imágenes sin espacios
+dir.create("temp_maps", showWarnings = FALSE)
+
+# Obtener rutas originales (con espacios)
+imagenes_origen <- list.files(
+  here(ruta_maps_flood), 
+  pattern = "(?i)\\.(png|jpg|jpeg)$", 
+  full.names = TRUE
+)
+
+# Copiar a carpeta temporal sin espacios
+file.copy(imagenes_origen, to = "temp_maps", overwrite = TRUE)
+```
+
+```{r tabla_flood_location, echo=FALSE, message=FALSE, warning=FALSE}
+library(kableExtra)
+
+# Mostrar tabla de flood_location
+flood_location %>%
+  kable(format = "latex", booktabs = TRUE, align = "c") %>%
+  kable_styling(
+    latex_options = c("striped", "scale_down", "hold_position"),
+    font_size = 11,
+    position = "center",
+    full_width = FALSE
+  ) %>%
+  row_spec(0, background = "azuloscuro", color = "white")
+```
+
+\vspace{1cm}
+
+```{r insertar_imagenes_flood_location, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(kableExtra)
+
+# Listar imágenes y extraer títulos
+imagenes <- list.files("temp_maps",
+                       pattern = "(?i)\\.(png|jpg|jpeg)$",
+                       full.names = TRUE)
+titulos <- tools::file_path_sans_ext(basename(imagenes))
+
+# Preparar LaTeX de títulos e imágenes
+titulos_latex  <- paste0(
+  "\\multicolumn{1}{>{\\centering\\arraybackslash}m{0.3\\textwidth}}",
+  "{\\cellcolor{azuloscuro}{\\color{white}\\textbf{", titulos, "}}}"
+)
+imagenes_latex <- paste0("\\includegraphics[width=0.3\\textwidth]{", imagenes, "}")
+
+# Completar a múltiplos de 3
+falta <- 3 - length(imagenes_latex) %% 3
+if (falta != 3) {
+  titulos_latex  <- c(titulos_latex,  rep("", falta))
+  imagenes_latex <- c(imagenes_latex, rep("", falta))
+}
+
+# Dividir en filas de 3
+filas_titulos  <- matrix(titulos_latex,  ncol = 3, byrow = TRUE)
+filas_imagenes <- matrix(imagenes_latex, ncol = 3, byrow = TRUE)
+
+# Renderizar cada bloque
+for (i in seq_len(nrow(filas_titulos))) {
+
+  # para bloques 2,3,...: nueva página y espacio flexible arriba
+  if (i > 1) {
+    cat("\\newpage\n")
+    cat("\\vspace*{\\fill}\n")
+  }
+
+  # generamos la tabla 3x1
+  tabla <- rbind(filas_titulos[i, ], filas_imagenes[i, ])
+  cat(
+    kable(tabla,
+          format     = "latex",
+          booktabs   = TRUE,
+          escape     = FALSE) %>%
+    kable_styling(
+      latex_options = "hold_position",
+      position      = "center",
+      full_width    = FALSE
+    )
+  )
+  cat("\n")
+
+  # para bloques 2,3,...: espacio flexible abajo
+  if (i > 1) {
+    cat("\\vspace*{\\fill}\n")
+  } else {
+    # en el primer bloque mantén el pequeño espacio que ya usabas
+    cat("\\vspace{0.8cm}\n")
+  }
+}
+```
+
+\newpage
+
+```{r resultados_por_centro, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(kableExtra)
+
+for (i in seq_along(base_nombres)) {
+  centro <- base_nombres[i]
+  nombre_limpio <- gsub("_", " ", centro)
+  data_tmp <- get(centro)
+
+  if (i == 1) {
+    cat("\\noindent \\textbf{\\textcolor{azuloscuro}{\\fontsize{28}{32}\\selectfont Results}} \\label{sec:results}\n\n")
+    cat("\\vspace{0.3cm}\n\n")
+  } else {
+    cat("\\newpage\n")
+  }
+
+  # Título del centro y descripción
+  cat(sprintf("\\textbf{\\textcolor{turquesa}{\\fontsize{16}{20}\\selectfont %s}}\n\n", nombre_limpio))
+  cat(sprintf("\\fontsize{11}{13}\\selectfont The following table shows the average and maximum flood in meters for the location %s.\n\n", nombre_limpio))
+
+  # Tabla de resultados
+  tabla <- kable(data_tmp, format = "latex", booktabs = TRUE, align = "c") %>%
+    add_header_above(c(
+      "Periodo de Retorno" = 2,
+      "Profundidad Inundación Ríos" = 3,
+      "Profundidad Aguas Superficiales" = 3
+    ),
+    escape = FALSE,
+    color = "white",
+    background = "azuloscuro") %>%
+    kable_styling(
+      latex_options = c("striped", "scale_down", "hold_position"),
+      font_size = 11,
+      position = "center",
+      full_width = FALSE
+    ) %>%
+    row_spec(0, background = "azuloscuro", color = "white")
+
+  cat("\n\n")
+  print(tabla)
+  cat("\n\n")
+
+# Insertar imagen si existe (como tabla 1x1)
+img_path <- file.path("temp_maps", paste0(nombre_limpio, ".png"))
+if (file.exists(img_path)) {
+  cat("\n\\vspace{0.2cm}\n")
+  tabla_img <- kable(
+    matrix(paste0("\\includegraphics[width=0.37\\textwidth]{", img_path, "}"), nrow = 1),
+    format = "latex", escape = FALSE, booktabs = TRUE
+  ) %>%
+    kable_styling(
+      font_size = 8,
+      latex_options = c("hold_position", "scale_down"),
+      position = "center",
+      full_width = FALSE
+    ) %>%
+    row_spec(1, extra_css = "border: none; padding: 0px;")
+  cat(tabla_img)
+}
+
+
+}
+
+
+
+```
+
+\newpage
+
+```{r return_periods_imagenes, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+library(kableExtra)
+
+orden_retorno <- c("1-20", "1-50", "1-100", "1-200", "1-500", "1-1500")
+
+for (i in seq_along(base_limpio)) {
+  centro <- base_limpio[i]
+  ruta_centro <- here::here(ruta_return, centro)
+
+  imagenes <- list.files(ruta_centro, pattern = "(?i)\\.(png|jpg|jpeg)$", full.names = TRUE)
+
+  # Si no hay imágenes, no imprimir nada
+  if (length(imagenes) == 0) next
+
+  # Extraer nombres y ordenarlos por retorno
+  nombres_archivos <- tools::file_path_sans_ext(basename(imagenes))
+  df_orden <- data.frame(nombre = nombres_archivos, ruta = imagenes, stringsAsFactors = FALSE)
+  df_orden$retorno <- regmatches(df_orden$nombre, regexpr("1-\\d+", df_orden$nombre))
+  df_orden$retorno <- factor(df_orden$retorno, levels = orden_retorno, ordered = TRUE)
+  df_orden <- df_orden[order(df_orden$retorno), ]
+
+  # Crear LaTeX para títulos e imágenes
+  titulos_latex <- paste0(
+    "\\multicolumn{1}{>{\\centering\\arraybackslash}m{0.3\\textwidth}}",
+    "{\\cellcolor{azuloscuro}{\\color{white}\\textbf{", df_orden$nombre, "}}}"
+  )
+  imagenes_latex <- paste0("\\includegraphics[width=0.3\\textwidth]{", df_orden$ruta, "}")
+
+  # Completar múltiplos de 3
+  falta <- 3 - length(imagenes_latex) %% 3
+  if (falta != 3) {
+    titulos_latex  <- c(titulos_latex,  rep("", falta))
+    imagenes_latex <- c(imagenes_latex, rep("", falta))
+  }
+
+  filas_titulos  <- matrix(titulos_latex,  ncol = 3, byrow = TRUE)
+  filas_imagenes <- matrix(imagenes_latex, ncol = 3, byrow = TRUE)
+  num_filas <- nrow(filas_titulos)
+
+  for (j in seq(1, num_filas, by = 2)) {
+    cat("\\newpage\n")
+    cat(sprintf("\\textbf{\\textcolor{turquesa}{\\fontsize{16}{20}\\selectfont Return Periods – %s}}\n\n", centro))
+    cat("\\vspace{0.3cm}\n")
+
+    bloque_titulos  <- filas_titulos[j:min(j+1, num_filas), , drop = FALSE]
+    bloque_imagenes <- filas_imagenes[j:min(j+1, num_filas), , drop = FALSE]
+
+    if (nrow(bloque_titulos) == 1) cat("\\vspace*{\\fill}\n")
+
+    for (k in seq_len(nrow(bloque_titulos))) {
+      tabla <- kable(rbind(bloque_titulos[k, ], bloque_imagenes[k, ]),
+                     format = "latex", booktabs = TRUE, escape = FALSE) %>%
+        kable_styling(
+          latex_options = "hold_position",
+          position      = "center",
+          full_width    = FALSE
+        )
+      cat(tabla)
+      cat("\n\n\\vspace{0.5cm}\n\n")
+    }
+
+    if (nrow(bloque_titulos) == 1) cat("\\vspace*{\\fill}\n")
+  }
+}
+
+
+```
+
+\newpage
+
+\noindent \includegraphics[width=3cm]{Logo.png}
+
+\vspace{1cm}
+
+\noindent \textbf{\textcolor{azuloscuro}{\fontsize{28}{32}\selectfont Disclaimer}} \vspace{1cm}
+
+\fontsize{11}{13}\selectfont This document and any recommendations, analysis, or advice provided by Marsh (collectively the "Marsh Analysis") is intended solely for the identified recipient entity (you). This document contains confidential information owned by Marsh and may not be shared with any third party, including other insurance producers, without the prior written consent of Marsh. Any statements regarding actuarial, tax, accounting, or legal matters are based solely on our experience as insurance brokers and risk consultants and should not be interpreted as advice, therefore, you should consult your own professional advisor. Any model, analysis, or projection is subject to appropriate reservations, and the Marsh Analysis may be materially affected if any condition, assumption, information, or factor is inaccurate, incomplete, or requires modification.
+
+\textbf{\fontsize{11}{13}\selectfont Copyright © JBA Risk Management Limited 2024. All rights reserved.}
+
+\fontsize{11}{13}\selectfont The data is the result of modeling natural hazards that are uncertain. No guarantees are made regarding the integrity, correctness, or timeliness of the information. JBA cannot predict the future, and all data on climate change should be used with caution and based on a solid understanding of the limitations and uncertainties of such data.
+
+\fontsize{11}{13}\selectfont JBA's climate data and services are based on data from third-party organizations (climate modeling) that JBA considers scientifically credible, as well as JBA's own robust development methodologies. At the same time, these models have known deficiencies and limitations in their representation of relevant physical systems, and since there are no observations of the future, they present deep uncertainties regarding their ability to simulate climates under possible future conditions. Like the available data from third-party climate models, JBA's data is only an illustration of one of the many possible changes that could occur based on one or more idealized climate scenarios. Consequently, JBA cannot and does not represent, guarantee, or ensure the accuracy of the output, its indications, and estimates.
+
+\fontsize{11}{13}\selectfont Should not:
+
+\begin{itemize}
+  \item {\fontsize{11}{13}\selectfont Use JBA data or evaluation results for commercial      purposes.}
+  \item {\fontsize{11}{13}\selectfont Not provide JBA data or evaluation results, in whole   or in part, to any third party, except as part of insurance brokerage activities or for    external reporting, regulatory documentation, or as required by law.}
+\end{itemize}

@@ -1,0 +1,214 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+    \setmainfont[]{Arial}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[landscape,top=5cm,left=2.5cm,bottom=2cm,right=2.5cm,margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{eso-pic}
+\usepackage{lipsum}
+\definecolor{azuloscuro}{RGB}{0,51,102}
+\definecolor{turquesa}{RGB}{0,174,239}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[R]{\thepage}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{\vspace{-2.5em}2025-05-22}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\AddToShipoutPictureBG*{%
+    \AtStockLowerLeft{%
+        \includegraphics[width=\paperwidth,height=\paperheight]{image.png}%
+    }%
+}
+
+\AddToShipoutPicture*{%
+    \AtStockUpperLeft{%
+        \hspace*{4 cm}%
+        \raisebox{-3.5cm}{\includegraphics[height=0.6cm]{Logo_Portada.png}
+}%
+    }%
+}
+
+\vspace*{4cm}
+\begin{flushleft}
+    \hspace*{1.5cm}{\fontsize{38}{45}\selectfont\color{white}\textbf{Reporte Modelo de Inundación}}\\[0.8cm]
+    \hspace*{1.5cm}{\fontsize{24}{30}\selectfont\color{white}Análisis de Portafolio}\\[1.2cm]
+    \hspace*{1.5cm}{\fontsize{24}{30}\selectfont\color{white}r cliente}\\[0.4cm]
+    \hspace*{1.5cm}{\Large\color{white}r fechaEsp}
+\end{flushleft}
+
+\vfill
+\begin{flushleft}
+    \hspace*{1.5cm}{\small\color{white}Un negocio de Marsh McLennan}
+\end{flushleft}
+
+\clearpage
+
+\noindent \textbf{\textcolor{turquesa}{\fontsize{16}{20}\selectfont Contenido}}
+
+\noindent
+
+\begin{enumerate}
+    \item {\fontsize{11}{13}\selectfont Resumen \dotfill \pageref{sec:summary}}
+    \item {\fontsize{11}{13}\selectfont Resultados \dotfill \pageref{sec:results}}
+\end{enumerate}
+\newpage
+
+\noindent \textbf{\textcolor{turquesa}{\fontsize{16}{20}\selectfont Consideraciones}}
+\vspace{0.5cm}
+
+\noindent \fontsize{11}{13}\selectfont La tecnología utilizada y las
+referencias proporcionadas para la generación de esta información se
+basan en datos científicos, modelos matemáticos y experiencia codificada
+de investigadores y especialistas en el área de Data Management.
+
+\begin{itemize}
+    \item {\fontsize{11}{13}\selectfont El presente informe, así como los análisis, modelos y predicciones que contiene este documento, ("Información"), se basan en datos provistos por MARSH a través de nuestro cliente: r cliente y gestionados a través de la tecnología informática de evaluación de riesgos propiedad de JBA Risk Management.}
+    \item {\fontsize{11}{13}\selectfont Es importante mencionar que la exactitud de las predicciones depende en gran medida de la precisión y calidad de los datos proporcionados por el cliente: r cliente a los especialistas de MARSH.}
+    \item {\fontsize{11}{13}\selectfont La gestión de la información proporcionada por r cliente se realiza a través del licenciamiento de MARSH en JBA Risk Management, haciendo uso de los marcos regulatorios para la protección de información confidencial; prohibiendo su distribución con terceros sin el previo consentimiento escrito de MARSH y JBA Risk Management.}
+    \item {\fontsize{11}{13}\selectfont La Información descrita dentro del reporte generado por Marsh, sólo puede ser utilizada con el propósito de estudio e interpretación de resultados para: r cliente Este documento no puede ser utilizada bajo ninguna circunstancia en el desarrollo y/ o calibración de cualquier oferta de productos o servicios que compita con JBA Risk Management y MARSH.}
+\end{itemize}
+
+\fontsize{11}{13}\selectfont Los mapas globales de inundaciones de JBA
+Risk Management, y la gestión de información de Marsh, proporcionan
+información indicativa sobre la extensión y profundidad de las
+inundaciones para ríos no defendidos y riesgos de inundaciones de aguas
+superficiales para los periodos de retorno de 20, 50, 100, 200, 500 y
+1.500 años. Los datos digitales de elevación subyacentes son una
+combinación de Modelos Digitales del Terreno (MDT) de una variedad de
+fuentes.
+
+\fontsize{11}{13}\selectfont Para las actualizaciones cartográficas
+posteriores a 2023, se utiliza ampliamente el DTMlite de Airbus
+WorldDEM. La cartografía de los riesgos de inundación se proporciona a
+escala mundial con una resolución de 30 m para todos los ríos y para las
+aguas superficiales. Los mapas se crean simulando los totales de
+precipitaciones de diseño y los volúmenes de caudal de los ríos,
+permitiendo que la inundación asociada a cada uno de ellos se extienda
+por el terreno circundante mediante un software de modelización
+hidráulica. Con el fin de estimar los caudales de los ríos y las
+cantidades de lluvia para cada período de retorno en cualquier lugar del
+mundo, JBA ha desarrollado modelos hidrológicos adecuados para la
+cartografía a escala mundial.
+
+\newpage
+
+\noindent \textbf{\textcolor{azuloscuro}{\fontsize{28}{32}\selectfont Resumen}}
+\label{sec:summary} \vspace{0.5cm}
+
+\fontsize{11}{13}\selectfont Este informe probabilístico sirve como
+herramienta para evaluar y cuantificar su riesgo a inundación. Este
+análisis utiliza modelos matemáticos y estadísticos para simular
+diferentes escenarios de inundación y determinar la probabilidad de que
+ocurran en un momento dado. Para la creación de este reporte se utilizan
+datos históricos, topográficos y de precipitación sobre zonas
+determinadas. Los resultados se presentan para los periodos de retorno
+de 20, 50, 100, 200, 500 y 1500 años con resultados que muestran las
+áreas afectadas y la dimensión de esta.
+
+\fontsize{11}{13}\selectfont El propósito de este informe es
+proporcionar a r cliente una Evaluación de Riesgo de Inundación.
+
+\fontsize{11}{13}\selectfont El alcance del proyecto incluye importar
+directamente los datos de entrada, según lo proporcionado por el
+cliente, en el modelo y ejecutar los análisis. El conjunto de eventos de
+inundación global de JBA permite examinar los patrones de inundación y
+evaluar las exposiciones a escala regional, continental y global para r
+cliente. El modelo utiliza métodos estadísticos sofisticados, junto con
+procesos de modelos físicos de lluvia y escorrentía, para capturar las
+posibles correlaciones espaciales y temporales de inundaciones causadas
+por ciclones tropicales, precipitaciones extremas y caudal de río. Las
+zonas de acumulación hidrológica se utilizan para comprender mejor las
+correlaciones de inundación e identificar áreas que pueden verse
+afectadas simultáneamente por el mismo evento, además proporcionan una
+unidad geográfica alternativa a los límites de la administración
+política para el análisis de agregación y acumulación. Los resultados
+por inundación de río representan inundaciones causadas por toda agua
+que este en movimiento (ríos, caños, drenajes). Los resultados por agua
+superficial representan inundaciones causadas por estancamiento de agua
+y desbordamiento de masas de agua que se hallan depositadas en
+depresiones de un terreno.
+
+\fontsize{11}{13}\selectfont Los modelos catastróficos a nivel país de
+JBA incorporan sus datos de inundaciones de alta resolución y
+proyecciones climáticas reconocidas internacionalmente, lo que permite
+evaluar la línea de base actual y el riesgo futuro de inundación de ríos
+y aguas superficiales con confianza para todos los países del mundo.
+
+\fontsize{11}{13}\selectfont Los resultados proporcionados por este
+informe son importantes para tomar decisiones sobre la prevención del
+uso del suelo, la construcción de infraestructura y la planificación de
+recuperación después de inundación. Se recomienda tomar medidas
+preventivas y de mitigación para reducir el impacto de las inundaciones
+y proteger vida humana, propiedad e infraestructura, así como tomarlo en
+cuenta para salvaguardar maquinaria, insumos o inventarios importantes
+que puedan causar la interrupción total o parcial del negocio.
+
+\end{document}

@@ -56,8 +56,8 @@ Centro_SDF <- data.frame(
 
 names(Centro_SDF) <- c(
   "Año", "Probabilidad",
-  "Área Afectada (%)", "Promedio (m)", "Máxima (m)",
-  "Área Afectada  (%)", "Promedio  (m)", "Máxima  (m)"
+  "Área Afectada (%)", "Promedio (m)", "Perdida (m)",
+  "Área Afectada  (%)", "Promedio  (m)", "Perdidaa (m)"
 )
 
 base_nombres <- ls()
@@ -89,3 +89,6 @@ ruta_temp <- here(file.path(ruta_codigo, "temp_maps"))
 if (dir.exists(ruta_temp)) {
   unlink(ruta_temp, recursive = TRUE, force = TRUE)
 } 
+
+cliente <- "Mash"
+fechaEsp<- "Mayo 2025"
